@@ -53,8 +53,32 @@ os_ip(T && integral, std::ostream &os)
  * @param strval string to print
  * @param os output stream
  * */
-template <template<typename,typename,typename> class C, typename Ch, typename ChTraits, typename Alloc>
+
+// #1 duplicate
+// template <typename T, typename = std::enable_if_t<std::is_same<T,std::string>::value>>
+// void os_ip(T && strval, std::ostream &os)
+
+// #2 does not work
+// template<class T, typename std::enable_if<std::is_same<T,std::string>::value, bool>::type = true>
+// void os_ip(T && strval, std::ostream &os)
+
+// #2a works!!!
+template<template<typename,typename,typename> class C, typename Ch, typename ChTraits, typename Alloc, typename std::enable_if<std::is_same<C<Ch,ChTraits,Alloc>,std::string>::value, bool>::type = true>
 void os_ip(C<Ch,ChTraits,Alloc> && strval, std::ostream &os)
+
+// #3 does not work
+// template<class T>
+// typename std::enable_if<std::is_same<std::string,T>::value>::type
+// os_ip(T && strval, std::ostream &os)
+
+// #3a works!!!
+// template<template<typename,typename,typename> class C, typename Ch, typename ChTraits, typename Alloc>
+// typename std::enable_if<std::is_same<std::string,C<Ch,ChTraits,Alloc>>::value>::type
+// os_ip(C<Ch,ChTraits,Alloc> && strval, std::ostream &os)
+
+// #4 works!!!
+// template <template<typename,typename,typename> class C, typename Ch, typename ChTraits, typename Alloc>
+// void os_ip(C<Ch,ChTraits,Alloc> && strval, std::ostream &os)
 {
   os << std::forward<std::string>(strval);
 }
