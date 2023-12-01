@@ -10,6 +10,8 @@
 #include <iostream>
 #include <limits>
 #include <string>
+#include <vector>
+#include <list>
 #include <type_traits>
 
 /**
@@ -31,8 +33,8 @@ const size_t bytesize = CHAR_BIT;
  * @param integral value to convert
  * @param os output stream
  * */
-template <typename T, typename = std::enable_if_t<std::is_integral<T>::value>>
-void
+template <typename T>
+typename std::enable_if<std::is_integral<T>::value>::type
 os_ip(T && integral, std::ostream &os)
 {
   auto biguint = static_cast<uint64_t>(std::forward<T>(integral));
@@ -44,44 +46,25 @@ os_ip(T && integral, std::ostream &os)
   }
 }
 
-// typename std::enable_if<std::is_same<T, std::string>::value>
+
 
 /**
  * Print string as is.
- * Simplest will be to have non-template function,
+ * Simplest will be to have non-template function, like following:
+ * @code
+ * void os_ip(std::string && strval, std::ostream &os)
+ * @endcode
  * but we need to fullfill the requirements...
  * @param strval string to print
  * @param os output stream
  * */
-
-// #1 duplicate
-// template <typename T, typename = std::enable_if_t<std::is_same<T,std::string>::value>>
-// void os_ip(T && strval, std::ostream &os)
-
-// #2 does not work
-// template<class T, typename std::enable_if<std::is_same<T,std::string>::value, bool>::type = true>
-// void os_ip(T && strval, std::ostream &os)
-
-// #2a works!!!
-template<template<typename,typename,typename> class C, typename Ch, typename ChTraits, typename Alloc, typename std::enable_if<std::is_same<C<Ch,ChTraits,Alloc>,std::string>::value, bool>::type = true>
-void os_ip(C<Ch,ChTraits,Alloc> && strval, std::ostream &os)
-
-// #3 does not work
-// template<class T>
-// typename std::enable_if<std::is_same<std::string,T>::value>::type
-// os_ip(T && strval, std::ostream &os)
-
-// #3a works!!!
-// template<template<typename,typename,typename> class C, typename Ch, typename ChTraits, typename Alloc>
-// typename std::enable_if<std::is_same<std::string,C<Ch,ChTraits,Alloc>>::value>::type
-// os_ip(C<Ch,ChTraits,Alloc> && strval, std::ostream &os)
-
-// #4 works!!!
-// template <template<typename,typename,typename> class C, typename Ch, typename ChTraits, typename Alloc>
-// void os_ip(C<Ch,ChTraits,Alloc> && strval, std::ostream &os)
+template <typename T>
+typename std::enable_if<std::is_same<T, std::string>::value>::type
+os_ip(T && strval, std::ostream &os)
 {
   os << std::forward<std::string>(strval);
 }
+
 
 
 /**
@@ -92,16 +75,20 @@ void os_ip(C<Ch,ChTraits,Alloc> && strval, std::ostream &os)
  * @param vecT container to print
  * @param os output stream
  * */
-template <template<typename,typename> class C, typename T, typename Alloc>
-void os_ip(C<T,Alloc> && vecT, std::ostream &os)
+template <typename T>
+typename std::enable_if<std::is_same<T, std::vector<typename T::value_type>>::value ||
+                        std::is_same<T, std::list<typename T::value_type>>::value>::type
+os_ip(T && vecT, std::ostream &os)
 {
   std::string delim;
-  for(auto && val : std::forward<C<T,Alloc>>(vecT))
+  for(auto && val : std::forward<T>(vecT))
   {
     os << delim << val;
     delim = ".";
   }
 }
+
+
 
 
 /**
