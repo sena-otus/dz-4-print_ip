@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 #include <list>
+#include <tuple>
 #include <type_traits>
 
 /**
@@ -55,6 +56,7 @@ os_ip(T && integral, std::ostream &os)
  * void os_ip(std::string && strval, std::ostream &os)
  * @endcode
  * but we need to fullfill the requirements...
+ * @tparam T string type
  * @param strval string to print
  * @param os output stream
  * */
@@ -69,9 +71,7 @@ os_ip(T && strval, std::ostream &os)
 
 /**
  * Print container members separated by dot.
- * @tparam C container class
- * @tparam T container element type
- * @tparam Alloc container allocator
+ * @tparam T container class
  * @param vecT container to print
  * @param os output stream
  * */
@@ -89,13 +89,22 @@ os_ip(T && vecT, std::ostream &os)
 }
 
 
+/** Print tuple members separated by dot.
+ * */
+template <template<typename...> class C, typename... Types>
+typename std::enable_if<std::is_same<class C<Types...>, std::tuple<Types...>>::value>::type
+os_ip(C<Types...> && tpl, std::ostream &os)
+{
+  std::apply([&os](auto&&... args) {((os << args << '.'), ...);}, std::forward<C<Types...>>(tpl));;
+}
 
 
 /**
  * Fancy ip-like print to std::cout
  * - print integral byte by byte, separated with dots
  * - print string as-is
- * - print container elements separated with dots.
+ * - print container elements separated with dots
+ * - print tuple members separated by dot
  * @tparam T type to print
  * @param val value to print
  * */

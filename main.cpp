@@ -16,6 +16,7 @@ int main(int, char const *[])
     print_ip( std::string{"Hello, World!"} ); // Hello, World!
     print_ip( std::vector<int>{100, 200, 300, 400} ); // 100.200.300.400
     print_ip( std::list<short>{400, 300, 200, 100} ); // 400.300.200.100
+    print_ip( std::make_tuple<int,int,int>(1,2,3));
   }
   catch(const std::exception &e)
   {
