@@ -2,6 +2,7 @@
 
 /**
  * @file printip.h
+ * Exercise 4, SFINAE
  * Header-only function print_ip for the strange IP-like printing
  *  */
 
