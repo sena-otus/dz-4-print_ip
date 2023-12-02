@@ -24,7 +24,6 @@ add_executable(print_ip main.cpp)
 set_target_properties(print_ip PROPERTIES
     CXX_STANDARD 20
     CXX_STANDARD_REQUIRED ON
-    CXX_EXTENSIONS OFF
 )
 
 target_include_directories(print_ip
