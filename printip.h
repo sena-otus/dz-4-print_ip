@@ -33,19 +33,19 @@ const size_t bytesize = CHAR_BIT;
  * Print byte components of the arbitrary integral type
  * @tparam T integral type
  * @param integral value to convert
- * @param os output stream
  * */
 template <typename T>
 typename std::enable_if<std::is_integral<T>::value>::type
-os_ip(T && integral, std::ostream &os)
+print_ip(T && integral)
 {
   auto biguint = static_cast<uint64_t>(std::forward<T>(integral));
   std::string delim;
   for(unsigned ii = sizeof(T); ii > 0; --ii)
   {
-    os << delim << ((biguint >> ((ii-1) * CHAR_BIT)) & maxuint8);
+    std::cout << delim << ((biguint >> ((ii-1) * CHAR_BIT)) & maxuint8);
     delim = ".";
   }
+  std::cout << "\n";
 }
 
 
@@ -54,18 +54,18 @@ os_ip(T && integral, std::ostream &os)
  * Print string as is.
  * Simplest will be to have non-template function, like following:
  * @code
- * void os_ip(std::string && strval, std::ostream &os)
+ * void print_ip(std::string && strval)
  * @endcode
  * but we need to fullfill the requirements...
  * @tparam T string type
  * @param strval string to print
- * @param os output stream
  * */
 template <typename T>
 typename std::enable_if<std::is_same<T, std::string>::value>::type
-os_ip(T && strval, std::ostream &os)
+print_ip(T && strval)
 {
-  os << std::forward<std::string>(strval);
+  std::cout << std::forward<std::string>(strval);
+  std::cout << "\n";
 }
 
 
@@ -74,23 +74,23 @@ os_ip(T && strval, std::ostream &os)
  * Print container members separated by dot.
  * @tparam T container class
  * @param vecT container to print
- * @param os output stream
  * */
 template <typename T>
 typename std::enable_if<std::is_same<T, std::vector<typename T::value_type>>::value ||
                         std::is_same<T, std::list<typename T::value_type>>::value>::type
-os_ip(T && vecT, std::ostream &os)
+print_ip(T && vecT)
 {
   std::string delim;
   for(auto && val : std::forward<T>(vecT))
   {
-    os << delim << val;
+    std::cout << delim << val;
     delim = ".";
   }
+  std::cout << "\n";
 }
 
 /**
- * Helper class for os_ip<tuple>.
+ * Helper class for print_ip<tuple>.
  * Ctor will accept only specified template type, producing complile
  * error if any other is passed. Implicit conversion is also deleted.
  * @tparam T type to allow
@@ -109,30 +109,14 @@ struct TypeChecker {
  * */
 template <template<typename...> class C, typename... Types>
 typename std::enable_if<std::is_same<class C<Types...>, std::tuple<Types...>>::value>::type
-os_ip(C<Types...> && tpl, std::ostream &os)
+print_ip(C<Types...> && tpl)
 {
-  std::apply([&os](auto&& arg, auto&&... args) {
+  std::apply([](auto&& arg, auto&&... args) {
     using ArgType = decltype(arg);
-    os << std::forward<ArgType>(arg);
-    ((os << "." << std::forward<decltype(args)>(args)), ...);
+    std::cout << std::forward<ArgType>(arg);
+    ((std::cout << "." << std::forward<decltype(args)>(args)), ...);
       // compile-time check that all tuple types are equal:
     (TypeChecker<ArgType>(std::forward<decltype(args)>(args)), ...);
   }, std::forward<decltype(tpl)>(tpl));;
-}
-
-
-/**
- * Fancy ip-like print to std::cout
- * - print integral byte by byte, separated with dots
- * - print string as-is
- * - print container elements separated with dots
- * - print tuple members separated by dot, all tuple types must be equal
- * @tparam T type to print
- * @param val value to print
- * */
-template <typename T>
-void print_ip(T &&val)
-{
-  os_ip(std::forward<T>(val), std::cout);
   std::cout << "\n";
 }
