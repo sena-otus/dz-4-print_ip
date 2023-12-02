@@ -4,7 +4,8 @@
 const int generic_errorcode = 102;
 
 
-// NOLINTNEXTLINE(hicpp-named-parameter,readability-named-parameter)
+  // NOLINTBEGIN(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+  // NOLINTNEXTLINE(hicpp-named-parameter,readability-named-parameter)
 int main(int, char const *[])
 {
   try
@@ -27,3 +28,4 @@ int main(int, char const *[])
   }
   return 0;
 }
+  // NOLINTEND(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
