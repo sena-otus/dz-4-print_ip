@@ -24,6 +24,7 @@ add_executable(print_ip main.cpp)
 set_target_properties(print_ip PROPERTIES
     CXX_STANDARD 20
     CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
 )
 
 target_include_directories(print_ip
@@ -52,7 +53,7 @@ endif()
 if (MSVC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
   else ()
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -Wextra -pedantic")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --all-warnings -Wall -Werror -Wextra -pedantic")
 endif()
 
 install(TARGETS print_ip RUNTIME DESTINATION bin)

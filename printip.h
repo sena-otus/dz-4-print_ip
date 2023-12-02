@@ -88,14 +88,35 @@ os_ip(T && vecT, std::ostream &os)
   }
 }
 
+/**
+ * Helper class for os_ip<tuple>.
+ * Ctor will accept only specified template type, producing complile
+ * error if any other is passed. Implicit conversion is also deleted.
+ * @tparam T type to allow
+ * */
+template <typename T>
+struct TypeChecker {
+  explicit TypeChecker(T&&) {}
+  template <class U>
+  TypeChecker(U&&var) = delete;
+};
 
-/** Print tuple members separated by dot.
+
+/**
+ * Print tuple members separated by dot.
+ * Additional restriction: all tuple types must be equal.
  * */
 template <template<typename...> class C, typename... Types>
 typename std::enable_if<std::is_same<class C<Types...>, std::tuple<Types...>>::value>::type
 os_ip(C<Types...> && tpl, std::ostream &os)
 {
-  std::apply([&os](auto&&... args) {((os << args << '.'), ...);}, std::forward<C<Types...>>(tpl));;
+  std::apply([&os](auto&& arg, auto&&... args) {
+    using ArgType = decltype(arg);
+    os << std::forward<ArgType>(arg);
+    ((os << "." << std::forward<decltype(args)>(args)), ...);
+      // compile-time check that all tuple types are equal:
+    (TypeChecker<ArgType>(std::forward<decltype(args)>(args)), ...);
+  }, std::forward<decltype(tpl)>(tpl));;
 }
 
 
@@ -104,7 +125,7 @@ os_ip(C<Types...> && tpl, std::ostream &os)
  * - print integral byte by byte, separated with dots
  * - print string as-is
  * - print container elements separated with dots
- * - print tuple members separated by dot
+ * - print tuple members separated by dot, all tuple types must be equal
  * @tparam T type to print
  * @param val value to print
  * */
@@ -114,7 +135,3 @@ void print_ip(T &&val)
   os_ip(std::forward<T>(val), std::cout);
   std::cout << "\n";
 }
-
-
-
-// print_ip( std::make_tuple(123, 456, 789, 0) ); // 123.456.789.0
