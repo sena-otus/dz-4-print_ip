@@ -1,7 +1,6 @@
 /**
  * @file main.cpp
- *
- *  Exercise 4, SFINAE. Call print_ip() with required parameters.
+ *  @brief Exercise 4, SFINAE. Call print_ip() with required parameters.
  *  */
 
 

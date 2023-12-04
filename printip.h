@@ -2,7 +2,7 @@
 
 /**
  * @file printip.h
- * Template function print_ip for the strange IP-like printing
+ * @brief Template function print_ip for the strange IP-like printing
  *  */
 
 #include <climits>
@@ -16,20 +16,20 @@
 #include <type_traits>
 
 /**
- *  Max uint8_t, that must be 255, for print_ip to work
+ *  @brief Max uint8_t, that must be 255, for print_ip to work
  *  That is checked in gtest_printip.cpp
  *  */
 const uint8_t maxuint8 = std::numeric_limits<uint8_t>::max();
 
 /**
- *  Byte size, that must be 8 for print_ip to work
+ *  @brief Byte size, that must be 8 for print_ip to work
  *  That is checked in gtest_printip.cpp
  *  */
 const size_t bytesize = CHAR_BIT;
 
 
 /**
- * Print byte components of the arbitrary integral type.
+ * @brief Print byte components of the arbitrary integral type.
  *
  * This function will be only available if argument is integral.
  * @tparam T argument type that must be of integral type
@@ -52,7 +52,7 @@ print_ip(T && integral)
 
 
 /**
- * Print string as is.
+ * @brief Print string as is.
  *
  * This function will be only available if argument is std::string.
  * Simplest will be to have non-template function, like following:
@@ -73,7 +73,7 @@ print_ip(T && strval)
 
 
 /**
- * Print container members separated by dot.
+ * @brief Print container members separated by dot.
  *
  * This function will be only available if argument is std::list or std::vector.
  * @tparam T type of passed argument that must be of list or vector type
@@ -95,7 +95,7 @@ print_ip(T && vecT)
 
 
 /**
- * Print tuple members separated by dot.
+ * @brief Print tuple members separated by dot.
  *
  * This function will be only available if argument is std::tuple.
  * Additional restriction: all tuple types must be equal.

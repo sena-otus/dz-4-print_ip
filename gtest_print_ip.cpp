@@ -1,7 +1,7 @@
 /**
  * @file gtest_print_ip.cpp
  *
- * Test print_ip()
+ * @brief Test print_ip()
  *  */
 
 #include <gtest/gtest.h>
