@@ -1,0 +1,7 @@
+<map id="printip.h" name="printip.h">
+<area shape="rect" id="Node000001" title="Template function print_ip for the strange IP&#45;like printing." alt="" coords="95,5,162,31"/>
+<area shape="rect" id="Node000002" href="$gtest__print__ip_8cpp.html" title="Test print_ip()" alt="" coords="5,79,129,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="110,44,79,80,75,77,106,41"/>
+<area shape="rect" id="Node000003" href="$main_8cpp.html" title="Exercise 4, SFINAE. Call print_ip() with required parameters." alt="" coords="153,79,226,105"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="150,41,181,77,177,80,146,44"/>
+</map>

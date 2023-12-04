@@ -1,0 +1,23 @@
+<map id="main.cpp" name="main.cpp">
+<area shape="rect" id="Node000001" title="Exercise 4, SFINAE. Call print_ip() with required parameters." alt="" coords="334,5,408,31"/>
+<area shape="rect" id="Node000002" href="$printip_8h.html" title="Template function print_ip for the strange IP&#45;like printing." alt="" coords="338,79,404,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="374,31,374,63,368,63,368,31"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,153,65,178"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="338,102,227,123,81,155,79,149,226,118,337,97"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="89,153,149,178"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="338,105,165,154,164,149,337,100"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="173,153,244,178"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="344,108,251,148,249,144,342,103"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="268,153,320,178"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="360,107,320,144,316,140,356,103"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="344,153,398,178"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="374,105,374,137,368,137,368,105"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="422,153,480,178"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="386,103,428,140,425,144,383,107"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="504,153,542,178"/>
+<area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="398,103,491,146,488,151,396,108"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="566,153,616,178"/>
+<area shape="poly" id="edge9_Node000002_Node000010" title=" " alt="" coords="405,101,553,149,551,154,404,106"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="640,153,721,178"/>
+<area shape="poly" id="edge10_Node000002_Node000011" title=" " alt="" coords="405,98,625,149,624,154,404,103"/>
+</map>
