@@ -2,7 +2,6 @@
 
 /**
  * @file printip.h
- * Exercise 4, SFINAE
  * Template function print_ip for the strange IP-like printing
  *  */
 
@@ -30,8 +29,10 @@ const size_t bytesize = CHAR_BIT;
 
 
 /**
- * Print byte components of the arbitrary integral type
- * @tparam T integral type
+ * Print byte components of the arbitrary integral type.
+ *
+ * This function will be only available if argument is integral.
+ * @tparam T argument type that must be of integral type
  * @param integral value to convert
  * */
 template <typename T>
@@ -52,12 +53,14 @@ print_ip(T && integral)
 
 /**
  * Print string as is.
+ *
+ * This function will be only available if argument is std::string.
  * Simplest will be to have non-template function, like following:
  * @code
  * void print_ip(std::string && strval)
  * @endcode
  * but we need to fullfill the requirements...
- * @tparam T string type
+ * @tparam T type of argument that must be of string type
  * @param strval string to print
  * */
 template <typename T>
@@ -69,10 +72,11 @@ print_ip(T && strval)
 }
 
 
-
 /**
  * Print container members separated by dot.
- * @tparam T container class
+ *
+ * This function will be only available if argument is std::list or std::vector.
+ * @tparam T type of passed argument that must be of list or vector type
  * @param vecT container to print
  * */
 template <typename T>
@@ -89,34 +93,26 @@ print_ip(T && vecT)
   std::cout << "\n";
 }
 
-/**
- * Helper class for print_ip<tuple>.
- * Ctor will accept only specified template type, producing complile
- * error if any other is passed. Implicit conversion is also deleted.
- * @tparam T type to allow
- * */
-template <typename T>
-struct TypeChecker {
-  explicit TypeChecker(T&&) {}
-  template <class U>
-  TypeChecker(U&&var) = delete;
-};
-
 
 /**
  * Print tuple members separated by dot.
+ *
+ * This function will be only available if argument is std::tuple.
  * Additional restriction: all tuple types must be equal.
+ * @tparam C type of passed argument that must be of tuple type
+ * @param tpl tuple to print
  * */
 template <template<typename...> class C, typename... Types>
-typename std::enable_if<std::is_same<class C<Types...>, std::tuple<Types...>>::value>::type
+typename std::enable_if<std::is_same_v<class C<Types...>, std::tuple<Types...>>>::type
 print_ip(C<Types...> && tpl)
 {
   std::apply([](auto&& arg, auto&&... args) {
     using ArgType = decltype(arg);
     std::cout << std::forward<ArgType>(arg);
     ((std::cout << "." << std::forward<decltype(args)>(args)), ...);
+
       // compile-time check that all tuple types are equal:
-    (TypeChecker<ArgType>(std::forward<decltype(args)>(args)), ...);
+    static_assert(std::conjunction_v<std::is_same<ArgType, decltype(args)>...>, "all tuple types must be equal");
   }, std::forward<decltype(tpl)>(tpl));;
   std::cout << "\n";
 }
